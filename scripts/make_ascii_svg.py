@@ -44,6 +44,17 @@ def to_rows(path, cols, aspect, invert, gamma):
     small = img.resize((cols, rows), Image.LANCZOS)
 
     arr = np.asarray(small).astype(np.float64) / 255.0
+
+    # Kontrasti KUCULTULMUS izgara uzerinde ac, kaynak goruntude degil.
+    # 4000 piksellik bir fotograf 86 sutuna inerken cok sayida piksel
+    # ortalaniyor ve tonlar birbirine yakinsiyor; kaynakta ne kadar kontrast
+    # olursa olsun izgara duzlesiyor ve yuz tek bir glife cokuyor. Burada
+    # gerdigimizde rampanin tamami kullaniliyor - kaynak cozunurlugu ne
+    # olursa olsun ayni sonuc.
+    lo, hi = np.percentile(arr, 4), np.percentile(arr, 96)
+    if hi - lo > 1e-6:
+        arr = ((arr - lo) / (hi - lo)).clip(0.0, 1.0)
+
     if gamma != 1.0:
         arr = np.power(arr, gamma)
     if invert:

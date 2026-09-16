@@ -126,8 +126,14 @@ def main():
     parser.add_argument("photo")
     parser.add_argument("--no-rembg", action="store_true",
                         help="arka plan silmeyi atla")
+    parser.add_argument("--bg", choices=("white", "black"), default="white",
+                        help="oznenin oturtulacagi zemin. Varsayilan beyaz, cunku "
+                             "make_ascii_svg varsayilan rampasinda koyu piksel = "
+                             "yogun glif; zemin beyaz olunca arka plan bosluga "
+                             "dusuyor. Siyah zemin sadece --invert ile anlamli.")
     parser.add_argument("--white-point", type=int, default=238,
-                        help="bu parlakligin ustundeki pikseller saf beyaza cekilir (0-255)")
+                        help="bu esigin otesindeki pikseller saf zemine cekilir "
+                             "(--bg white icin ust esik, --bg black icin alt esik)")
     parser.add_argument("--gain", type=float, default=1.0,
                         help="son kontrast carpani (1.0 = degistirme)")
     parser.add_argument("--clip", type=float, default=2.5,
@@ -156,8 +162,9 @@ def main():
     elif args.crop != "none":
         print("  ! kirpma alfa kanaline dayaniyor, rembg olmadan atlaniyor")
 
-    # Saf beyaz zemine yapistir: seffaf alanlar rampanin bos ucuna dussun
-    canvas = Image.new("RGBA", img.size, (255, 255, 255, 255))
+    # Zemine yapistir: seffaf alanlar rampanin bos ucuna dussun
+    fill = (255, 255, 255, 255) if args.bg == "white" else (0, 0, 0, 255)
+    canvas = Image.new("RGBA", img.size, fill)
     canvas.alpha_composite(img.convert("RGBA"))
     gray = canvas.convert("L")
 
@@ -173,9 +180,13 @@ def main():
     # Hafif keskinlestirme: kucultuldugunde hatlar dagilmasin
     out = out.filter(ImageFilter.UnsharpMask(radius=2, percent=90, threshold=3))
 
-    # Beyaz noktasi: acik gri arka plani tamamen beyaza cek (-> ASCII'de bosluk)
+    # Zemin noktasi: kenarlarda kalan yari saydam bulasigi tam zemine cek,
+    # boylece ASCII'de bosluga dusup arka plani temiz birakiyor.
     arr = np.asarray(out).copy()
-    arr[arr >= args.white_point] = 255
+    if args.bg == "white":
+        arr[arr >= args.white_point] = 255
+    else:
+        arr[arr <= 255 - args.white_point] = 0
     out = Image.fromarray(arr)
 
     out.save(args.out)

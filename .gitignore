@@ -6,3 +6,9 @@ source-prepped.png
 
 # deneme ciktilari (gecici, repoya girmez)
 _*
+
+# kisisel fotograflar repoya girmez
+IMG_*.png
+IMG_*.jpg
+linkedin-photo.png
+linkedin-foto-*.png
