@@ -1,0 +1,7 @@
+# --- günlük otomasyon için gerekli olanlar ---
+requests==2.32.3
+beautifulsoup4==4.12.3
+
+# --- sadece portre üretimi için (yerelde, fotoğrafı değiştirdiğinde) ---
+pillow
+numpy

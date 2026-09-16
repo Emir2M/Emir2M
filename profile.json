@@ -1,0 +1,49 @@
+{
+  "username": "Emir2M",
+  "hostname": "github",
+  "card": {
+    "title": "whoami",
+    "rows": [
+      [
+        "Now",
+        "Student @ 42 Istanbul"
+      ],
+      [
+        "Focus",
+        "C, systems programming, algorithms"
+      ],
+      [
+        "Stack",
+        "C, Git, Shell, Makefile"
+      ],
+      [
+        "Current",
+        "Libft - 42 core curriculum"
+      ],
+      [
+        "Location",
+        "Istanbul, Turkey"
+      ],
+      [
+        "LinkedIn",
+        "in/emirhan-yildirim-0b85b8301"
+      ],
+      [
+        "Contact",
+        "sporistanbulyapayzeka@gmail.com"
+      ]
+    ]
+  },
+  "theme": {
+    "bg": "#0d1117",
+    "fg": "#c9d1d9",
+    "dim": "#8b949e",
+    "accent": "#39d353",
+    "accent2": "#58a6ff",
+    "border": "#30363d"
+  },
+  "ascii": {
+    "cols": 86,
+    "photo": "source-prepped.png"
+  }
+}
