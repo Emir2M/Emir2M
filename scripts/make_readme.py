@@ -23,6 +23,12 @@ OUT = os.path.join(ROOT, "README.md")
 TOTAL_W = 860        # portre + kart genisligi; isi haritasi da bu genislikte
 
 
+def esc(text):
+    """Link etiketleri README'ye HTML olarak gomuluyor, kacislari sart."""
+    return (str(text).replace("&", "&amp;").replace("<", "&lt;")
+            .replace(">", "&gt;"))
+
+
 def svg_size(name):
     """SVG'nin kok width/height degerlerini oku."""
     path = os.path.join(ROOT, name)
@@ -86,6 +92,19 @@ def main():
             "",
         ]
 
+    # Kart bir <img> oldugu icin icindeki yazi tiklanamaz - SVG metni link
+    # olmuyor. Tiklanabilir olmasi gereken her sey buraya, gercek <a>
+    # etiketleri olarak geliyor.
+    links = config.get("links") or []
+    if links:
+        lines += [
+            "<br>",
+            "",
+            "  ".join('<a href="%s"><code>%s</code></a>' % (url, esc(label))
+                      for label, url in links),
+            "",
+        ]
+
     lines += [
         "<br>",
         "",
@@ -99,10 +118,10 @@ def main():
         fh.write("\n".join(lines))
     print("README.md yazildi")
 
-    write_preview(prompt, portrait, card)
+    write_preview(prompt, portrait, card, links)
 
 
-def write_preview(prompt, portrait, card):
+def write_preview(prompt, portrait, card, links):
     """Yerel onizleme sayfasi - README ile ayni genislikleri kullanir.
 
     Genislikleri iki dosyaya elle yazmak ikisinin birbirinden kaymasina yol
@@ -127,6 +146,12 @@ def write_preview(prompt, portrait, card):
     heat_block = ('<h3>%s ./contributions.sh</h3>\n<img src="./contrib-heatmap.svg" width="%d">'
                   % (prompt, TOTAL_W)) if heat else ""
 
+    # Linkleri onizlemeye de koy: GitHub'a gondermeden once tarayicidan
+    # tiklayip gercekten dogru adrese gittiklerini gorebilmek icin.
+    link_block = ('<p class="links">%s</p>'
+                  % "  ".join('<a href="%s"><code>%s</code></a>' % (url, esc(label))
+                              for label, url in links)) if links else ""
+
     html = """<!doctype html>
 <meta charset="utf-8">
 <title>Profil onizleme</title>
@@ -138,14 +163,18 @@ def write_preview(prompt, portrait, card):
   img{display:block}
   button{background:#21262d;color:#c9d1d9;border:1px solid #30363d;border-radius:6px;
          padding:8px 16px;font:inherit;cursor:pointer;margin-top:32px}
+  .links{margin-top:26px;display:flex;gap:18px}
+  .links a{color:#58a6ff;text-decoration:none}
+  .links a:hover{text-decoration:underline}
 </style>
 <!-- GitHub README'nin birebir aynisi degil, ama SVG animasyonlarini ayni
      sekilde oynatir ve genislikler README ile ayni hesaptan geliyor. -->
 %s
 <h3>%s whoami</h3>
 %s
+%s
 <button onclick="location.reload()">animasyonlari tekrar oynat</button>
-""" % (gap, heat_block, prompt, row)
+""" % (gap, heat_block, prompt, row, link_block)
 
     with open(os.path.join(ROOT, "preview.html"), "w", encoding="utf-8") as fh:
         fh.write(html)

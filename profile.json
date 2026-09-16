@@ -6,31 +6,35 @@
     "rows": [
       [
         "Now",
-        "Student @ 42 Istanbul"
+        "SE student @ Topkapi University"
       ],
       [
-        "Focus",
-        "C, systems programming, algorithms"
-      ],
-      [
-        "Stack",
-        "C, Git, Shell, Makefile"
+        "42 Istanbul",
+        "Common core since Aug 3, 2026"
       ],
       [
         "Current",
-        "Libft - 42 core curriculum"
+        "ft_printf  (Libft done)"
+      ],
+      [
+        "Side",
+        "randevumcepte.shop"
+      ],
+      [
+        "Stack",
+        "C, Shell, Make, Git"
+      ],
+      [
+        "Focus",
+        "Low-level C at 42, AI-assisted projects"
       ],
       [
         "Location",
         "Istanbul, Turkey"
       ],
       [
-        "LinkedIn",
-        "in/emirhan-yildirim-0b85b8301"
-      ],
-      [
         "Contact",
-        "sporistanbulyapayzeka@gmail.com"
+        "emirhany493@gmail.com"
       ]
     ]
   },
@@ -45,5 +49,19 @@
   "ascii": {
     "cols": 86,
     "photo": "source-prepped.png"
-  }
+  },
+  "links": [
+    [
+      "LinkedIn",
+      "https://www.linkedin.com/in/emirhan-y%C4%B1ld%C4%B1r%C4%B1m-0b85b8301/"
+    ],
+    [
+      "randevumcepte.shop",
+      "https://randevumcepte.shop"
+    ],
+    [
+      "emirhany493@gmail.com",
+      "mailto:emirhany493@gmail.com"
+    ]
+  ]
 }
