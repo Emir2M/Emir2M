@@ -31,7 +31,14 @@ jobs:
       - run: python scripts/fetch_contributions.py
       - run: python scripts/render_heatmap_svg.py
 
+      # Commit'i acikca bot kimligiyle at. Aksi halde action, repodaki son
+      # commit'in kimligini devraliyor ve gunluk tazeleme Emirhan'in katkisi
+      # olarak sayiliyor - yani hic kod yazilmayan gunlerde bile grafikte
+      # yesil kare cikiyor. Grafik gercek calismayi gostermeli.
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh contribution graph [skip ci]"
           file_pattern: "data/contributions.json contrib-heatmap.svg"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
